@@ -1,0 +1,189 @@
+*{
+    box-sizing: border-box;
+}
+
+
+.div-complete{
+    width: 100%;
+    height: 100%;
+}
+
+.header-pdf{
+    width: 100%;
+    height: 100px;
+    margin: 0;
+    background-color:white ;
+    border-bottom:0.1em  solid black;
+    margin: 0;
+    margin-bottom: 7px;
+    display: block;
+}
+.div-complete-pdf{
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.li-ul-nav-header-pdf {
+    display: inline-block;
+    margin-right: 30px;
+    margin-top: 20px;
+
+}
+.li-ul-nav-header-pdf a{
+    color: rgb(112, 92, 92);
+}
+
+.complete{
+    width: 21cm;
+    height: 27cm;
+    margin-left: auto;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.form-pdf{
+    width: 40%;
+    height: fit-content;
+    border: 0.1em solid black;
+    padding: 14px;
+    padding-bottom: 2px;
+    margin-bottom: 10px;
+}
+
+.formato-pdf{
+    font-family: 'Times New Roman', Times, serif;
+    width: 100%;
+    height:100%;
+    border: 0.1em solid black;
+    padding-left: 2cm;
+    padding-right: 2cm;
+
+}
+
+.formato-pdf img{
+    display: block;
+    width: 100%;
+    height:130px;
+    margin-bottom: 30px;
+}
+.formato-pdf p{
+   font-size: 12pt;
+}
+.div-padding{
+    width: 100%;
+    height: fit-content;
+    display: inline-block;
+} 
+.div-padding h2{
+    width: 100%;
+    height: min-content;
+    text-align: center;
+    display:block ;
+    padding: 0;
+} 
+.div-padding .fecha-solicitud{
+    width: 100%;
+    text-align: end;
+    margin-top: 30px;
+} 
+.div-padding #cuerpo{
+    width: 100%;
+    height: 100%;;
+    margin-top: 30px;
+    display: flex;
+    flex-wrap: wrap;
+
+} 
+.div-complete-pdf form label{
+    display: block;
+    color: rgb(62, 58, 58);
+    margin: 7px;
+}
+
+.div-complete-pdf form input{
+    display: block;
+    height: 40px;
+    width: 100%;
+
+    margin: 7px;
+}
+.div-complete-pdf form textarea{
+    display: block;
+    margin: 7px;
+}
+
+
+.div-complete-pdf form textarea{
+    outline: none;
+}
+
+
+
+.div-complete-pdf form .btn-guardar {
+    background-color: rgb(49, 255, 17);
+    display: inline-block;
+    width: 30% ; 
+    border: none;
+    cursor: pointer;
+}
+
+.div-complete-pdf form .btn-editar {
+    background-color: rgb(255, 204, 0);
+    display: inline-block;
+    width: 30% ; 
+    border: none;
+    cursor: pointer;
+}
+
+.div-complete-pdf form .btn-rojo {
+    background-color: rgb(255, 0, 0);
+    display: inline-block;
+    width: 30% ; 
+    border: none;
+    cursor: pointer;
+}
+.btn-guardar {
+    background-color: rgb(49, 255, 17);
+    display: inline-block;
+    width:fit-content ; 
+    border: none;
+    cursor: pointer;
+}
+
+.btn-rojo {
+    background-color: rgb(255, 0, 0);
+    display: inline-block;
+    width: fit-content ; 
+    border: none;
+    cursor: pointer;
+}
+.btn-editar {
+    background-color: rgb(255, 204, 0);
+    display: inline-block;
+    width: fit-content ; 
+    border: none;
+    cursor: pointer;
+}
+/*tabla styles*/
+
+
+
+
+
+
+
+
+
+
+/*hover*/
+
+
+
+
+
+/*focus*/
+
+.div-complete-pdf form input:focus{
+    outline: none;
+  }
