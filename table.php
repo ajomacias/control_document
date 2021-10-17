@@ -6,7 +6,7 @@ $id = (isset($_POST['ID']))?$_POST['ID']:"";
 
 switch($accion){
     case "editar":
-        header("location:pdf.php");
+        header("location:index.php?varId=$id");
         break;
     case "eliminar":
         $sentenciaSQL = $conexion->prepare("DELETE FROM `documentos` WHERE `documentos`.`id` = :id");

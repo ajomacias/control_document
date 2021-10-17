@@ -6,6 +6,7 @@
 .div-complete{
     width: 100%;
     height: 100%;
+    margin: 0;
 }
 
 .header-pdf{
@@ -15,7 +16,6 @@
     background-color:white ;
     border-bottom:0.1em  solid black;
     margin: 0;
-    margin-bottom: 7px;
     display: block;
 }
 .div-complete-pdf{
@@ -164,6 +164,17 @@
     width: fit-content ; 
     border: none;
     cursor: pointer;
+}
+
+.mensaje{
+    background-color: rgb(230, 221, 184);
+    height: fit-content;
+    width: 100%;
+    color: rgb(65, 62, 62);
+    text-align: center;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    margin: 0;
+    height: 40px;
 }
 /*tabla styles*/
 

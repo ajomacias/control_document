@@ -12,48 +12,76 @@ $accion = (isset($_POST['action']))?$_POST['action']:"";
 
 switch($accion){
     case "Guardar y imprimir":
-    $sentensiaSQL = $conexion->prepare("INSERT INTO documentos (id, tipo_de_document, fecha, profesion, destinatario, rol, saludo, cuerpo) VALUES (NULL, :tipo, :fecha, :profesion, :destinatario, :rol, :saludo, :cuerpo)");
-    $sentensiaSQL->bindParam(':tipo', $nombre_documento);
-    $sentensiaSQL->bindParam(':fecha', $fecha);
-    $sentensiaSQL->bindParam(':profesion', $profesion);
-    $sentensiaSQL->bindParam(':destinatario', $destinatario);
-    $sentensiaSQL->bindParam(':rol', $rol);
-    $sentensiaSQL->bindParam(':saludo', $saludo);
-    $sentensiaSQL->bindParam('cuerpo', $cuerpo);
-    $sentensiaSQL->execute();
-    $id = $conexion->lastInsertId();
-    echo $id;
+        $sentenciaSQL = $conexion->prepare("SELECT cuerpo FROM documentos WHERE documentos.cuerpo=:cuerpo");
+        $sentenciaSQL->bindParam(':cuerpo',$cuerpo);
+        $sentenciaSQL->execute();
+        $verificar = $sentenciaSQL->fetch( PDO::FETCH_LAZY);
+        if($verificar){
+            $mensaje = "Este documento ya existe, otro documento tiene exactamente el mismo cuerpo";
+            break;
 
-    header("location:pdf.php?varId=$id");
-    
-    break;
+        }else{
+            $sentensiaSQL = $conexion->prepare("INSERT INTO documentos (id, tipo_de_document, fecha, profesion, destinatario, rol, saludo, cuerpo) VALUES (NULL, :tipo, :fecha, :profesion, :destinatario, :rol, :saludo, :cuerpo)");
+            $sentensiaSQL->bindParam(':tipo', $nombre_documento);
+            $sentensiaSQL->bindParam(':fecha', $fecha);
+            $sentensiaSQL->bindParam(':profesion', $profesion);
+            $sentensiaSQL->bindParam(':destinatario', $destinatario);
+            $sentensiaSQL->bindParam(':rol', $rol);
+            $sentensiaSQL->bindParam(':saludo', $saludo);
+            $sentensiaSQL->bindParam('cuerpo', $cuerpo);
+            $sentensiaSQL->execute();
+            $id = $conexion->lastInsertId();
+
+             header("location:pdf.php?varId=$id");
+             break;
+
+        }
 
     case "Cancelar":
     header("Location:index.php");
     break;
 
+    case "editar":
+        $sentenciaSQL = $conexion->prepare("UPDATE documentos as d SET d.tipo_de_document=:documento, d.fecha=:fecha, d.profesion=:profesion, d.destinatario=:destinatario, d.rol=:rol, d.saludo=:saludo, d.cuerpo=:cuerpo WHERE d.id=:id");
+
+        break;
+
 }
+
+if($_GET){
+    $id = $_GET["varId"];
+    $sentenciaSQL = $conexion->prepare("SELECT * FROM documentos as d WHERE d.id = :id ");
+    $sentenciaSQL->bindParam(':id', $id);
+    $sentenciaSQL->execute();
+    $cargar = $sentenciaSQL->fetch(PDO::FETCH_LAZY);
+    
+};
 
 include("./template/encabezado.php");
 ?>
     <div class="div-complete-pdf">
+        <?php if(isset($mensaje)){?>    
+                <div class="mensaje"> <?php echo $mensaje; ?> </div>
+                <?php } ?>
         <div class="form-pdf">
+        
             <form method="post" >
+                
             <label class="form-label" for="document-name-form">Tipo de documento:</label>
-                <input id="document-name-form" name="documento" type="text" required >
+                <input id="document-name-form" name="documento" value="<?php if(isset($id)) echo $cargar['tipo_de_document']?:""; ?>" type="text" required >
                 <label class="form-label" for="fecha-form">Fecha:</label>
-                <input id="fecha-form" name="fecha" type="text" required >
+                <input id="fecha-form" name="fecha" value="<?php if(isset($id)) echo $cargar['fecha']?:""; ?>"  type="text" required >
                 <label class="form-label" for="proesion-form">Profesion:</label>
-                <input id="profesion-form" name="profesion" type="text" required >
+                <input id="profesion-form" name="profesion" type="text" value="<?php if(isset($id)) echo $cargar['profesion']?:""; ?>"  required >
                 <label for="nombre-form">Nombre destinatario:</label>
-                <input id="nombre-form" name="destinatario" type="text" required >
+                <input id="nombre-form" name="destinatario" value="<?php if(isset($id)) echo $cargar['destinatario']?:""; ?>"  type="text" required >
                 <label for="rol-form">Rol:</label>
-                <input id="rol-form" name="rol" type="text" required >
+                <input id="rol-form" name="rol" name="destinatario" value="<?php if(isset($id)) echo $cargar['rol']?:"";?>" type="text" required >
                 <label for="cordial-form">Saludo:</label>
-                <input id="cordial-form" name="saludo" type="text" required >
+                <input id="cordial-form" name="saludo" value="<?php if(isset($id)) echo $cargar['saludo']?:"";?>" type="text" required >
                 <label for="cuerpo-form"></label>
-                <textarea name="cuerpo" id="cuerpo-form" cols="60" rows="15.8" required ></textarea>
-                 <input class="btn-guardar" name="action" type="submit" value="Guardar y imprimir">
+                <textarea name="cuerpo" id="cuerpo-form" cols="60" rows="15.8" <?php if(isset($id)) echo $cargar['cuerpo']?:"";?> required ><?php if(isset($id)) echo $cargar['cuerpo']?:"";?></textarea>
+                 <input class="btn-guardar" <?php if(isset($id)) echo "disabled"?:""; ?> name="action" type="submit" value="Guardar y imprimir">
                  <input class="btn-editar" name="action" type="submit" value="Editar">
                  <input class="btn-rojo" name="action" type="submit" value="Cancelar">
 

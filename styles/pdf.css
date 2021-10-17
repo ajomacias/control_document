@@ -3,8 +3,8 @@
 }
 
 .complete{
-    width: 21cm;
-    height: 27cm;
+    width: 210mm;
+    height:297mm;
     margin: 0 auto;
     display: block;
 }
@@ -12,7 +12,6 @@
     font-family: 'Times New Roman', Times, serif;
     width: 100%;
     height:100%;
-    border: 0.1em solid black;
     padding-left: 2cm;
     padding-right: 2cm;
 
@@ -39,7 +38,8 @@
 } 
 .div-padding p{
     width: 100%;
-  line-height: 0.7cm;
+    line-height: 0.7cm;
+    font-size: 12pt;
 } 
 .div-padding .fecha-solicitud{
     width: 100%;
