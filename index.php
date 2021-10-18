@@ -1,6 +1,15 @@
 <?php
 require("./config/db.php");
 
+if($_GET){
+    $id = $_GET["varId"];
+    $sentenciaSQL = $conexion->prepare("SELECT * FROM documentos as d WHERE d.id = :id ");
+    $sentenciaSQL->bindParam(':id', $id);
+    $sentenciaSQL->execute();
+    $cargar = $sentenciaSQL->fetch(PDO::FETCH_LAZY);
+    
+};
+
 $nombre_documento = (isset($_POST['documento']))?$_POST['documento']:"";
 $fecha =  (isset($_POST['fecha']))?$_POST['fecha']:"";
 $profesion = (isset($_POST['profesion']))?$_POST['profesion']:"";
@@ -31,7 +40,7 @@ switch($accion){
             $sentensiaSQL->bindParam('cuerpo', $cuerpo);
             $sentensiaSQL->execute();
             $id = $conexion->lastInsertId();
-
+            $mensaje = "Se a insertado correctamente";
              header("location:pdf.php?varId=$id");
              break;
 
@@ -41,21 +50,22 @@ switch($accion){
     header("Location:index.php");
     break;
 
-    case "editar":
+    case "Editar":
         $sentenciaSQL = $conexion->prepare("UPDATE documentos as d SET d.tipo_de_document=:documento, d.fecha=:fecha, d.profesion=:profesion, d.destinatario=:destinatario, d.rol=:rol, d.saludo=:saludo, d.cuerpo=:cuerpo WHERE d.id=:id");
+        $sentenciaSQL->bindParam(':documento', $nombre_documento );
+        $sentenciaSQL->bindParam(':fecha', $fecha );
+        $sentenciaSQL->bindParam(':profesion',$profesion);
+        $sentenciaSQL->bindParam(':destinatario', $destinatario );
+        $sentenciaSQL->bindParam(':rol', $rol );
+        $sentenciaSQL->bindParam(':saludo', $saludo);
+        $sentenciaSQL->bindParam(':cuerpo', $cuerpo );
+        $sentenciaSQL->bindParam(':id', $id);
+        $sentenciaSQL->execute();
 
+        $mensaje = "Se ha editado correctamente";
+        header("location:index.php?varId=$id");
         break;
-
 }
-
-if($_GET){
-    $id = $_GET["varId"];
-    $sentenciaSQL = $conexion->prepare("SELECT * FROM documentos as d WHERE d.id = :id ");
-    $sentenciaSQL->bindParam(':id', $id);
-    $sentenciaSQL->execute();
-    $cargar = $sentenciaSQL->fetch(PDO::FETCH_LAZY);
-    
-};
 
 include("./template/encabezado.php");
 ?>
@@ -68,19 +78,19 @@ include("./template/encabezado.php");
             <form method="post" >
                 
             <label class="form-label" for="document-name-form">Tipo de documento:</label>
-                <input id="document-name-form" name="documento" value="<?php if(isset($id)) echo $cargar['tipo_de_document']?:""; ?>" type="text" required >
+                <input id="document-name-form" name="documento" value="<?php echo  isset($id) ? $cargar['tipo_de_document']:""; ?>" type="text" required >
                 <label class="form-label" for="fecha-form">Fecha:</label>
-                <input id="fecha-form" name="fecha" value="<?php if(isset($id)) echo $cargar['fecha']?:""; ?>"  type="text" required >
+                <input id="fecha-form" name="fecha" value="<?php echo  isset($id) ? $cargar['fecha']:""; ?>"  type="text" required >
                 <label class="form-label" for="proesion-form">Profesion:</label>
-                <input id="profesion-form" name="profesion" type="text" value="<?php if(isset($id)) echo $cargar['profesion']?:""; ?>"  required >
+                <input id="profesion-form" name="profesion" type="text" value="<?php echo  isset($id) ? $cargar['profesion']:""; ?>"  required >
                 <label for="nombre-form">Nombre destinatario:</label>
-                <input id="nombre-form" name="destinatario" value="<?php if(isset($id)) echo $cargar['destinatario']?:""; ?>"  type="text" required >
+                <input id="nombre-form" name="destinatario" value="<?php echo  isset($id) ? $cargar['destinatario']:""; ?>"  type="text" required >
                 <label for="rol-form">Rol:</label>
-                <input id="rol-form" name="rol" name="destinatario" value="<?php if(isset($id)) echo $cargar['rol']?:"";?>" type="text" required >
+                <input id="rol-form" name="rol" name="destinatario" value="<?php echo  isset($id) ? $cargar['rol']:""; ?>" type="text" required >
                 <label for="cordial-form">Saludo:</label>
-                <input id="cordial-form" name="saludo" value="<?php if(isset($id)) echo $cargar['saludo']?:"";?>" type="text" required >
+                <input id="cordial-form" name="saludo" value="<?php echo  isset($id) ? $cargar['saludo']:""; ?>" type="text" required >
                 <label for="cuerpo-form"></label>
-                <textarea name="cuerpo" id="cuerpo-form" cols="60" rows="15.8" <?php if(isset($id)) echo $cargar['cuerpo']?:"";?> required ><?php if(isset($id)) echo $cargar['cuerpo']?:"";?></textarea>
+                <textarea name="cuerpo" id="cuerpo-form" cols="60" rows="15.8"  required ><?php echo  isset($id) ? $cargar['cuerpo']:""; ?></textarea>
                  <input class="btn-guardar" <?php if(isset($id)) echo "disabled"?:""; ?> name="action" type="submit" value="Guardar y imprimir">
                  <input class="btn-editar" name="action" type="submit" value="Editar">
                  <input class="btn-rojo" name="action" type="submit" value="Cancelar">
@@ -107,9 +117,6 @@ include("./template/encabezado.php");
         </div>
     </div>
 </div>
-
-
-
 
     </div>
 
